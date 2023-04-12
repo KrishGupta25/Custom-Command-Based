@@ -57,17 +57,15 @@ public class DriveTrain extends SubsystemBase {
 
   }
 
+  public void arcadeDrive(double fwd, double rot)
+  {
+    differentialDrive.arcadeDrive(fwd, rot);
+  }
   /* (non-Javadoc)
    * @see edu.wpi.first.wpilibj2.command.Subsystem#periodic()
    */
   @Override
-  public void periodic() 
-  {
-    public void arcadeDrive(double fwd, double rot)
-    {
-      differentialDrive.arcadeDrive(fwd, rot);
-    }
-  }
+  public void periodic(){}
 
   @Override
   public void simulationPeriodic()
