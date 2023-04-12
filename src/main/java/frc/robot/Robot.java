@@ -18,7 +18,6 @@ import frc.robot.subsystems.DriveTrain;
 public class Robot extends TimedRobot 
 {
   public static DriveTrain driveTrain = new DriveTrain();
-  public static OI m_oi;
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;

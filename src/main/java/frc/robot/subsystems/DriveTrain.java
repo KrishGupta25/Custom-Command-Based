@@ -68,8 +68,5 @@ public class DriveTrain extends SubsystemBase {
   public void periodic(){}
 
   @Override
-  public void simulationPeriodic()
-  {
-
-  }
+  public void simulationPeriodic(){}
 }
