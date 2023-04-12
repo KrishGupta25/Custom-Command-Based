@@ -6,55 +6,72 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 
 public class DriveTrain extends SubsystemBase {
 
-  private CANSparkMax mLeftSlave;
-  private CANSparkMax mLeftMaster;
-  private CANSparkMax mRightMaster;
-  private CANSparkMax mRightSlave;
-
-  /** Creates a new DriveTrain. */
-  public DriveTrain() 
-  {
     //Initializes all motor controllers
     CANSparkMax mLeftMaster = new CANSparkMax(Constants.LeftMasterCANID, MotorType.kBrushless);
     CANSparkMax mLeftSlave = new CANSparkMax(Constants.LeftSlaveCANID, MotorType.kBrushless);
     CANSparkMax mRightMaster = new CANSparkMax(Constants.RightMasterCANID, MotorType.kBrushless);
     CANSparkMax mRightSlave = new CANSparkMax(Constants.RightSlaveCANID, MotorType.kBrushless);
 
+    //Creating Motor Controller Groups
+    MotorControllerGroup mLeftMotorControllerGroup = new MotorControllerGroup(mLeftMaster, mLeftSlave);
+    MotorControllerGroup mRightMotorControllerGroup = new MotorControllerGroup(mRightMaster, mRightSlave);
+
+    //Creating Encoders for The Motors
+    RelativeEncoder mLeftEncoder = mLeftMaster.getEncoder();
+    RelativeEncoder mRightEncoder = mRightMaster.getEncoder();
+
+    //Making a Differential DriveTrain
+    DifferentialDrive differentialDrive = new DifferentialDrive(mLeftMotorControllerGroup, mRightMotorControllerGroup);
+
+
+  public DriveTrain() 
+  {
+    //Restarting Everything to Factory Defualt
+    mLeftMaster.restoreFactoryDefaults();
+    mLeftSlave.restoreFactoryDefaults();
+    mRightMaster.restoreFactoryDefaults();
+    mRightSlave.restoreFactoryDefaults();
+
+    //Resetting Encoders Position
+    mLeftEncoder.setPosition(0);
+    mRightEncoder.setPosition(0);
+
     //Sets all of them to follow respective ones
     mLeftSlave.follow(mLeftMaster);
     mRightSlave.follow(mRightMaster);
 
     //Sets left side to be inverted
-    mLeftMaster.setInverted(true);
-    mLeftSlave.setInverted(true);
-    mRightMaster.setInverted(false);
-    mRightSlave.setInverted(false);
+    mLeftMotorControllerGroup.setInverted(true);
+    mLeftMotorControllerGroup.setInverted(false);
+
 
   }
 
+  /* (non-Javadoc)
+   * @see edu.wpi.first.wpilibj2.command.Subsystem#periodic()
+   */
   @Override
   public void periodic() 
   {
-    // This method will be called once per scheduler run
+    public void arcadeDrive(double fwd, double rot)
+    {
+      differentialDrive.arcadeDrive(fwd, rot);
+    }
   }
 
-  public void setLeftMotors(double speed)
+  @Override
+  public void simulationPeriodic()
   {
-    mLeftMaster.set(speed);
-    mLeftSlave.set(speed);
-  }
 
-  public void setRightMotos(double speed)
-  {
-    mRightMaster.set(speed);
-    mRightSlave.set(speed);
   }
 }

@@ -4,8 +4,14 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.DriveWithJoystick;
+import frc.robot.subsystems.DriveTrain;
+
+import java.lang.ModuleLayer.Controller;
+
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -18,11 +24,17 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  public static CommandXboxController controller = new CommandXboxController(1);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  public static DriveTrain drivetrain = new DriveTrain();
+
+  public static DriveWithJoystick drivewithjoystick = new DriveWithJoystick(drivetrain);
+
+
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+    drivetrain.setDefaultCommand(drivewithjoystick);
   }
 
   /**
@@ -46,6 +58,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return drivewithjoystick;
   }
 }

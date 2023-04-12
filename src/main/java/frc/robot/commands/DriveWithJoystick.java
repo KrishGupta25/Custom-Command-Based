@@ -4,29 +4,32 @@
 
 package frc.robot.commands;
 
-import java.lang.module.ModuleDescriptor.Requires;
-
-import edu.wpi.first.wpilibj.PS4Controller.Axis;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveTrain;
 
-public class Tankdrive extends CommandBase {
-  /** Creates a new Tankdrive. */
-  public Tankdrive() {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Robot.driveTrain);
+
+public class DriveWithJoystick extends CommandBase {
+  private final DriveTrain drivetrain;
+
+  public DriveWithJoystick(DriveTrain drivetrain) 
+  {
+    this.drivetrain = drivetrain;
+    addRequirements(drivetrain);
   }
 
-  // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize(){}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute()
+  public void execute() 
   {
-    double LeftStickY = Robot.m_oi.GetDriveRaxAxis(axis);
+    double forwardSpeed = RobotContainer.controller.getLeftY();
+    double turnSpeed = RobotContainer.controller.getLeftX();
+
+    drivetrain.arcadeDrive(forwardSpeed, turnSpeed);
   }
 
   // Called once the command ends or is interrupted.

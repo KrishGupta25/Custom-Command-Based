@@ -12,17 +12,13 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {
-  public static class OperatorConstants 
-  {
-  }
-  public static final int kDriverControllerPort = 1;
-    
+public final class Constants
+{
+    public static final int LeftMasterCANID = 11;
+    public static final int LeftSlaveCANID = 13;
+    public static final int RightMasterCANID = 12;
+    public static final int RightSlaveCANID = 14;
+    public static final int mainControllerPort = 0;    
   //Setting CAN ID's for Drivetrain
-  public static final int LeftMasterCANID = 11;
-  public static final int LeftSlaveCANID = 13;
-  public static final int RightMasterCANID = 12;
-  public static final int RightSlaveCANID = 14;
-  public static final int mainControllerPort = 0;
 
 }
