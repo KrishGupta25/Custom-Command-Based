@@ -5,29 +5,29 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.ArmSubSystem;
 
-
-public class ArmWithController extends CommandBase
-{
+public class ArmtoSetpoint extends CommandBase {
+  /** Creates a new ArmtoSetpoint. */
+  
   private final ArmSubSystem arm;
-
-  public ArmWithController(ArmSubSystem arm) 
-  {
+  public ArmtoSetpoint(ArmSubSystem arm) {
     this.arm = arm;
     addRequirements(arm);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() 
+  {
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute()
   {
-    arm.setSpeed((RobotContainer.controller.getRightY()) -0.3 / (0.7));
+
   }
 
   // Called once the command ends or is interrupted.

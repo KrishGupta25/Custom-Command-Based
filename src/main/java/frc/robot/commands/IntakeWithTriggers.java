@@ -25,10 +25,10 @@ public class IntakeWithTriggers extends CommandBase
   @Override
   public void execute() 
   {
-    if (RobotContainer.controller.leftTrigger() != 0)
-      intake.setSpeed(lef);
-    if (RobotContainer.controller.rightTrigger())
-      intake.setSpeed(RobotContainer.controller.rightTrigger());
+    if (RobotContainer.controller.getLeftTriggerAxis() != 0)
+      intake.setSpeed(RobotContainer.controller.getLeftTriggerAxis());
+    if (RobotContainer.controller.getRightTriggerAxis() != 0)
+      intake.setSpeed(RobotContainer.controller.getRightTriggerAxis());
   }
 
   // Called once the command ends or is interrupted.

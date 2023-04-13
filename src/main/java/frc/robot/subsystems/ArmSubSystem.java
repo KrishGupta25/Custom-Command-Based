@@ -6,35 +6,43 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import edu.wpi.first.wpilibj2.command.TrapezoidProfileSubsystem;
+import edu.wpi.first.hal.simulation.REVPHDataJNI;
 import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.robot.Constants;
 
 /** Add your docs here. */
-public class Arm extends SubsystemBase
+public class ArmSubSystem extends SubsystemBase
 {
     //Making The Motor Controllers
     CANSparkMax mLeftArm = new CANSparkMax(Constants.LeftArmCANID, MotorType.kBrushless);
     CANSparkMax mRightArm = new CANSparkMax(Constants.RightArmCANID, MotorType.kBrushless);
     
     //Making The Encoders
-    RelativeEncoder mLeftEncoder = mLeftArm.getEncoder();
-    RelativeEncoder mRightEncoder = mRightArm.getEncoder();
+    public RelativeEncoder mArmEncoder = mLeftArm.getEncoder();
     
+    //Making a FF
     ArmFeedforward mArmFF = new ArmFeedforward(Constants.kArmS, Constants.kArmG, Constants.kArmV);
 
-public Arm()
+    //Making Arm PID Controller 
+    SparkMaxPIDController mArmController = new 
+
+
+public ArmSubSystem()
 {
+    super(new TrapezoidProfile.Constraints(ArmConstants.kMaxVelocityRadPerSecond, ArmConstants.kMaxAccelerationRadPerSecSquared), ArmConstants.kArmOffsetRads);
+    mLeftArm.setP
     //Restarting Motors to Factory Default
     mLeftArm.restoreFactoryDefaults();
     mRightArm.restoreFactoryDefaults();
 
     //Resetting Encoders
-    mLeftEncoder.setPosition(0);
-    mRightEncoder.setPosition(0);
+    mArmEncoder.setPosition(0);
 
     //Make Arms Follow Eachother
     mRightArm.follow(mLeftArm, true);
@@ -43,7 +51,11 @@ public Arm()
     mLeftArm.setSmartCurrentLimit(30);
     mRightArm.setSmartCurrentLimit(30);
 
+    
+
+
 }
+
 
 public void brakeMode(Boolean input)
 {
@@ -73,5 +85,6 @@ public void setSpeed(double speed)
         }
 
 }
+
 }
 
