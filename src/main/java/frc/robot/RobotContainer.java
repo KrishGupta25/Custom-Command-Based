@@ -8,7 +8,11 @@ import frc.robot.Constants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.ArmWithController;
+<<<<<<< HEAD
 import frc.robot.subsystems.ArmSubSystem;
+=======
+import frc.robot.subsystems.Arm;
+>>>>>>> a887e3355b245f17204d67c4cf70ca0e7e8908ce
 import frc.robot.subsystems.DriveTrain;
 
 import java.lang.ModuleLayer.Controller;
@@ -31,7 +35,11 @@ public class RobotContainer {
   public static DriveTrain drivetrain = new DriveTrain();
   public static DriveWithJoystick drivewithjoystick = new DriveWithJoystick(drivetrain);
 
+<<<<<<< HEAD
   public static ArmSubSystem arm = new ArmSubSystem();
+=======
+  public static Arm arm = new Arm();
+>>>>>>> a887e3355b245f17204d67c4cf70ca0e7e8908ce
   public static ArmWithController armController = new ArmWithController(arm);
 
 
