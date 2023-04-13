@@ -14,11 +14,29 @@ package frc.robot;
  */
 public final class Constants
 {
-    public static final int LeftMasterCANID = 11;
-    public static final int LeftSlaveCANID = 13;
-    public static final int RightMasterCANID = 12;
-    public static final int RightSlaveCANID = 14;
-    public static final int mainControllerPort = 0;    
-  //Setting CAN ID's for Drivetrain
+  //DriveTain.java
+    //CANIDS
+      public static final int LeftMasterCANID = 11;
+      public static final int LeftSlaveCANID = 13;
+      public static final int RightMasterCANID = 12;
+      public static final int RightSlaveCANID = 14;
+      public static final int mainControllerPort = 0;    
+
+  //Arm.java 
+    //CANDIS
+    public static final int LeftArmCANID = 31;
+    public static final int RightArmCANID = 32;
+
+    //Constants for feedforward
+      public static final double kArmS = 0.12855;
+      public static final double kArmG = 0.14945;
+      public static final double kArmV = 0.050359;
+
+      public static final double  kArmGearRatio = 228.5;
+      public static final double  kLowGearRatio = 10.75;
+  //Intake.java
+      //CANIDS
+      public static final int LeftIntakeCANID = 21;
+      public static final int LRightIntakeCANID = 22;
 
 }
