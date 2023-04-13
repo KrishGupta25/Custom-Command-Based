@@ -7,6 +7,8 @@ package frc.robot;
 import frc.robot.Constants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.DriveWithJoystick;
+import frc.robot.commands.ArmWithController;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 
 import java.lang.ModuleLayer.Controller;
@@ -27,14 +29,17 @@ public class RobotContainer {
   public static CommandXboxController controller = new CommandXboxController(1);
 
   public static DriveTrain drivetrain = new DriveTrain();
-
   public static DriveWithJoystick drivewithjoystick = new DriveWithJoystick(drivetrain);
+
+  public static Arm arm = new Arm();
+  public static ArmWithController armController = new ArmWithController(arm);
 
 
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
     drivetrain.setDefaultCommand(drivewithjoystick);
+    arm.setDefaultCommand(armController);
   }
 
   private void configureBindings(){}

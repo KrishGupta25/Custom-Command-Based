@@ -11,11 +11,14 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.Subsystem;
+
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
-public class DriveTrain extends SubsystemBase {
+import java.lang.Math;
 
+public class DriveTrain extends SubsystemBase
+{
     //Initializes all motor controllers
     CANSparkMax mLeftMaster = new CANSparkMax(Constants.LeftMasterCANID, MotorType.kBrushless);
     CANSparkMax mLeftSlave = new CANSparkMax(Constants.LeftSlaveCANID, MotorType.kBrushless);
@@ -31,8 +34,9 @@ public class DriveTrain extends SubsystemBase {
     RelativeEncoder mRightEncoder = mRightMaster.getEncoder();
 
     //Making a Differential DriveTrain
-    DifferentialDrive differentialDrive = new DifferentialDrive(mLeftMotorControllerGroup, mRightMotorControllerGroup);
+    DifferentialDrive mDrivetrain = new DifferentialDrive(mLeftMotorControllerGroup, mRightMotorControllerGroup);
 
+  
 
   public DriveTrain() 
   {
@@ -52,18 +56,59 @@ public class DriveTrain extends SubsystemBase {
 
     //Sets left side to be inverted
     mLeftMotorControllerGroup.setInverted(true);
-    mLeftMotorControllerGroup.setInverted(false);
+    mRightMotorControllerGroup.setInverted(false);
+    
+    //Current Limits Motors
+    mLeftMaster.setSmartCurrentLimit(80);
+    mLeftSlave.setSmartCurrentLimit(80);
+    mRightMaster.setSmartCurrentLimit(80);
+    mRightSlave.setSmartCurrentLimit(80);
 
 
   }
 
-  public void arcadeDrive(double fwd, double rot)
+
+  public void arcadeDrive(double left, double right)
   {
-    differentialDrive.arcadeDrive(fwd, rot);
+    mDrivetrain.arcadeDrive(left, right);
   }
-  /* (non-Javadoc)
-   * @see edu.wpi.first.wpilibj2.command.Subsystem#periodic()
-   */
+
+
+  public void drive(double left, double right)
+  {
+    mDrivetrain.tankDrive(left, right);
+  }
+
+
+  public void cheesyDrive(double throttle, double wheel, Boolean isQuickTurn)
+  {
+
+    double scaledThrottle = (throttle + (throttle < 0 ? 0.075 : -0.075)) / (1 - 0.075);
+    throttle = (Math.abs(throttle) > 0.075) ? scaledThrottle : 0;
+
+    double scaledWheel = (wheel + (wheel < 0 ? 0.075 : -0.075)) / (1 - 0.075);
+    wheel = (Math.abs(wheel) > 0.075) ? scaledWheel : 0;
+
+    double wheelNonLinearity = 0.5;
+    double denominator = Math.sin(Math.PI/ 2.0 * wheelNonLinearity);
+
+    if (!isQuickTurn)
+    {
+      wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel);
+      wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel);
+      wheel = wheel / (denominator * denominator) * Math.abs(throttle);
+    }
+
+    wheel *= 1;
+
+     double rightOutput = throttle - wheel, leftOutput = throttle + wheel;
+     double scalingFactor = Math.max(1.0, Math.abs(throttle));
+
+     drive(leftOutput/scalingFactor, rightOutput/scalingFactor);
+
+    
+  }
+
   @Override
   public void periodic(){}
 

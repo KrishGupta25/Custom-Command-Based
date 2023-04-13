@@ -4,29 +4,31 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Intake;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.DriveTrain;
 
+public class IntakeWithTriggers extends CommandBase 
+{
+  public final Intake intake;
 
-public class DriveWithJoystick extends CommandBase {
-  private final DriveTrain drivetrain;
-
-  public DriveWithJoystick(DriveTrain drivetrain) 
+  public IntakeWithTriggers(Intake intake) 
   {
-    this.drivetrain = drivetrain;
-    addRequirements(drivetrain);
+    this.intake = intake;
+    addRequirements(intake);
   }
 
   @Override
-  public void initialize(){}
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() 
   {
-    drivetrain.cheesyDrive(-RobotContainer.controller.getLeftY(), RobotContainer.controller.getRightX(), RobotContainer.controller.rightBumper().getAsBoolean());
+    if (RobotContainer.controller.leftTrigger() != 0)
+      intake.setSpeed(lef);
+    if (RobotContainer.controller.rightTrigger())
+      intake.setSpeed(RobotContainer.controller.rightTrigger());
   }
 
   // Called once the command ends or is interrupted.
