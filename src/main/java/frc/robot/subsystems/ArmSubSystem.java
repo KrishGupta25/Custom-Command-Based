@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.fasterxml.jackson.databind.deser.NullValueProvider;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -14,6 +15,8 @@ import edu.wpi.first.wpilibj2.command.TrapezoidProfileSubsystem;
 import edu.wpi.first.hal.simulation.REVPHDataJNI;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.Trajectory.State;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import frc.robot.Constants;
 
 /** Add your docs here. */
@@ -30,13 +33,17 @@ public class ArmSubSystem extends SubsystemBase
     ArmFeedforward mArmFF = new ArmFeedforward(Constants.kArmS, Constants.kArmG, Constants.kArmV);
 
     //Making Arm PID Controller 
-    SparkMaxPIDController mArmController = new 
-
-
+    SparkMaxPIDController mArmController = mLeftArm.getPIDController();
+    
+    Constraints kArmMaxVelocity = new Constraints(80, 120);
+    //TrapezoidProfileSubsystem armMotion = new TrapezoidProfileSubsystem(kArmMaxVelocity);
+    
+    
+   
+     
 public ArmSubSystem()
 {
-    super(new TrapezoidProfile.Constraints(ArmConstants.kMaxVelocityRadPerSecond, ArmConstants.kMaxAccelerationRadPerSecSquared), ArmConstants.kArmOffsetRads);
-    mLeftArm.setP
+    
     //Restarting Motors to Factory Default
     mLeftArm.restoreFactoryDefaults();
     mRightArm.restoreFactoryDefaults();
@@ -51,9 +58,46 @@ public ArmSubSystem()
     mLeftArm.setSmartCurrentLimit(30);
     mRightArm.setSmartCurrentLimit(30);
 
+    //Setting PID Values
+    mArmController.setP(Constants.kArmP);
+    mArmController.setI(Constants.kArmI);
+    mArmController.setD(Constants.kArmD);   
+
+}
+
+public void setPosition(int preset)
+{
+    if (preset != 0)
+    {
+        double position = 0;
+
+        switch (preset)
+        {
+            case 1000: //stowed
+                position = 0;
+                break;
+            case 2000: //mid goal
+                //mConeMode ? heightIfCone : heightIfCube;
+                position = -124.9;
+                break;
+            case 3000: //high goal
+                position = -180;
+                break;
+            case 4000: //human player
+                position = -31.8; //-33.3 : -33.3
+                break;
+            case 5000: //low goal
+                position = -26.3;
+                break;
+            case 6000: //ground cube intake
+            {
+                position = - 98.47;
+                break;
+            }
+        }
+        System.out.println(position);
+    }
     
-
-
 }
 
 
@@ -85,6 +129,5 @@ public void setSpeed(double speed)
         }
 
 }
-
 }
 

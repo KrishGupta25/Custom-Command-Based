@@ -35,11 +35,16 @@ public final class Constants
       public static final double  kArmGearRatio = 228.5;
       public static final double  kLowGearRatio = 10.75;
     //PID Constants
-    public static final double kArmP = 0.2; //0.052272
-    public static final double kArmI = 0;
-    public static final double kArmD = 0;
-    public static final double kArmFF = 0;
-    public static final double kArmIZone = 0;
+      public static final double kArmP = 0.2; //0.052272
+      public static final double kArmI = 0;
+      public static final double kArmD = 0;
+      public static final double kArmFF = 0;
+      public static final double kArmIZone = 0;
+    //PID Max Constraints
+      public static final double kMaxVelocityDegPerSecond = 80;
+      public static final double kMaxAccelerationDegPerSecSquared = 100;
+      public static final double mGoal = 0;
+      public static final double msetpoint = 0;
   //Intake.java
       //CANIDS
       public static final int LeftIntakeCANID = 21;
