@@ -11,6 +11,7 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.TrapezoidProfileCommand;
 import edu.wpi.first.wpilibj2.command.TrapezoidProfileSubsystem;
 import edu.wpi.first.hal.simulation.REVPHDataJNI;
 import edu.wpi.first.math.controller.ArmFeedforward;
@@ -34,13 +35,7 @@ public class ArmSubSystem extends SubsystemBase
 
     //Making Arm PID Controller 
     SparkMaxPIDController mArmController = mLeftArm.getPIDController();
-    
-    Constraints kArmMaxVelocity = new Constraints(80, 120);
-    //TrapezoidProfileSubsystem armMotion = new TrapezoidProfileSubsystem(kArmMaxVelocity);
-    
-    
-   
-     
+         
 public ArmSubSystem()
 {
     
@@ -97,6 +92,9 @@ public void setPosition(int preset)
         }
         System.out.println(position);
     }
+    
+    TrapezoidProfile profile = new TrapezoidProfile(new TrapezoidProfile.Constraints(80, 120), new TrapezoidProfile.State(5, 0),
+    new TrapezoidProfile.State(0, 0));
     
 }
 
