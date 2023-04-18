@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.ArmSubSystem;
 
 public class ArmtoSetpoint extends CommandBase {
@@ -20,7 +21,16 @@ public class ArmtoSetpoint extends CommandBase {
   @Override
   public void initialize() 
   {
-
+    int armSetPoint = 0;
+    if (RobotContainer.controller.getBButtonPressed())
+      armSetPoint = 1000; //stowed
+    else if (RobotContainer.controller.getXButtonPressed())
+      armSetPoint = 4000; //human player
+    else if (RobotContainer.controller.getYButtonPressed())
+      armSetPoint = 3000; //high goal
+    else if (RobotContainer.controller.getAButtonPressed())
+      armSetPoint = 6000; //ground goal
+    arm.setPosition(armSetPoint);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

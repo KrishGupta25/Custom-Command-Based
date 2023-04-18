@@ -19,6 +19,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 /** Add your docs here. */
 public class ArmSubSystem extends SubsystemBase
@@ -35,6 +36,13 @@ public class ArmSubSystem extends SubsystemBase
 
     //Making Arm PID Controller 
     SparkMaxPIDController mArmController = mLeftArm.getPIDController();
+
+    private final TrapezoidProfile.Constraints m_constraints = new TrapezoidProfile.Constraints(80, 120);
+    private TrapezoidProfile.State m_goal = new TrapezoidProfile.State();
+
+    private TrapezoidProfile.State m_setpoint = new TrapezoidProfile.State();
+
+    final private static double kDt = 0.02;
          
 public ArmSubSystem()
 {
@@ -50,8 +58,8 @@ public ArmSubSystem()
     mRightArm.follow(mLeftArm, true);
 
     //Current Limits Motors
-    mLeftArm.setSmartCurrentLimit(30);
-    mRightArm.setSmartCurrentLimit(30);
+    mLeftArm.setSmartCurrentLimit(5);
+    mRightArm.setSmartCurrentLimit(5);
 
     //Setting PID Values
     mArmController.setP(Constants.kArmP);
@@ -62,6 +70,8 @@ public ArmSubSystem()
 
 public void setPosition(int preset)
 {
+
+
     if (preset != 0)
     {
         double position = 0;
@@ -91,11 +101,16 @@ public void setPosition(int preset)
             }
         }
         System.out.println(position);
+        System.out.println(mLeftArm.getEncoder().getPosition());
+
+        m_goal = new TrapezoidProfile.State(position, 0);
+        var profile = new TrapezoidProfile(m_constraints, m_goal, m_setpoint);
+        m_setpoint = profile.calculate(kDt);
+        
+        //System.out.println("Set Point " + m_setpoin)
+    
+        mArmController.setReference(position, CANSparkMax.ControlType.kPosition, 0);
     }
-    
-    TrapezoidProfile profile = new TrapezoidProfile(new TrapezoidProfile.Constraints(80, 120), new TrapezoidProfile.State(5, 0),
-    new TrapezoidProfile.State(0, 0));
-    
 }
 
 

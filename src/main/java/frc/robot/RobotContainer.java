@@ -8,6 +8,7 @@ import frc.robot.Constants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.ArmWithController;
+import frc.robot.commands.ArmtoSetpoint;
 import frc.robot.subsystems.ArmSubSystem;
 import frc.robot.subsystems.DriveTrain;
 
@@ -15,8 +16,11 @@ import java.lang.ModuleLayer.Controller;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.button.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -26,23 +30,29 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  public static CommandXboxController controller = new CommandXboxController(1);
+  public static XboxController controller = new XboxController(1);
 
   public static DriveTrain drivetrain = new DriveTrain();
   public static DriveWithJoystick drivewithjoystick = new DriveWithJoystick(drivetrain);
 
   public static ArmSubSystem arm = new ArmSubSystem();
   public static ArmWithController armController = new ArmWithController(arm);
+  public static ArmtoSetpoint armSetpoint = new ArmtoSetpoint(arm);
+
+  
 
 
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
     drivetrain.setDefaultCommand(drivewithjoystick);
-    arm.setDefaultCommand(armController);
+    arm.setDefaultCommand((armSetpoint));
   }
 
-  private void configureBindings(){}
+  private void configureBindings()
+  {
+
+  }
 
   public Command getAutonomousCommand() {
     return drivewithjoystick;
