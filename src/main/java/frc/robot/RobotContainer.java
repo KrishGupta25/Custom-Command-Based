@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj2.command.button.*;
+//import edu.wpi.first.wpilibj2.command.button.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -39,7 +39,6 @@ public class RobotContainer {
   public static ArmWithController armController = new ArmWithController(arm);
   public static ArmtoSetpoint armSetpoint = new ArmtoSetpoint(arm);
 
-  
 
 
   public RobotContainer() {
@@ -47,6 +46,8 @@ public class RobotContainer {
     configureBindings();
     drivetrain.setDefaultCommand(drivewithjoystick);
     arm.setDefaultCommand((armSetpoint));
+    //arm.setSpeed(controller.getLeftY());
+    //Commands.startEnd(arm.seta, arm);
   }
 
   private void configureBindings()

@@ -58,8 +58,8 @@ public ArmSubSystem()
     mRightArm.follow(mLeftArm, true);
 
     //Current Limits Motors
-    mLeftArm.setSmartCurrentLimit(5);
-    mRightArm.setSmartCurrentLimit(5);
+    mLeftArm.setSmartCurrentLimit(20);
+    mRightArm.setSmartCurrentLimit(25);
 
     //Setting PID Values
     mArmController.setP(Constants.kArmP);

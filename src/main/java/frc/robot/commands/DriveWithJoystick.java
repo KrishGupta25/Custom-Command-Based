@@ -26,7 +26,7 @@ public class DriveWithJoystick extends CommandBase {
   @Override
   public void execute() 
   {
-    drivetrain.cheesyDrive(-RobotContainer.controller.getLeftY(), RobotContainer.controller.getRightX(), RobotContainer.controller.getRightBumperPressed());
+    drivetrain.cheesyDrive(-RobotContainer.controller.getLeftY(), RobotContainer.controller.getRightX(), RobotContainer.controller.getRightBumper());
   }
 
   // Called once the command ends or is interrupted.

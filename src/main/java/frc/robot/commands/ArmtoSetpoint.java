@@ -21,6 +21,12 @@ public class ArmtoSetpoint extends CommandBase {
   @Override
   public void initialize() 
   {
+
+  }
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute()
+  {
     int armSetPoint = 0;
     if (RobotContainer.controller.getBButtonPressed())
       armSetPoint = 1000; //stowed
@@ -31,13 +37,8 @@ public class ArmtoSetpoint extends CommandBase {
     else if (RobotContainer.controller.getAButtonPressed())
       armSetPoint = 6000; //ground goal
     arm.setPosition(armSetPoint);
-  }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute()
-  {
-
+    arm.setSpeed((RobotContainer.controller.getRightY()) -0.3 / (0.7));
   }
 
   // Called once the command ends or is interrupted.
