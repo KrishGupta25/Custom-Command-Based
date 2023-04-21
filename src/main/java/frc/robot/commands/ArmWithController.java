@@ -27,7 +27,8 @@ public class ArmWithController extends CommandBase
   @Override
   public void execute()
   {
-    arm.setSpeed((RobotContainer.controller.getRightY()) -0.3 / (0.7));
+    arm.setSpeed((RobotContainer.controller.getRightY()) -0.3 / (2));
+    //System.out.println(ArmSubSystem.mLeftArm.getEncoder().getPosition());
   }
 
   // Called once the command ends or is interrupted.
