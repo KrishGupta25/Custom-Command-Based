@@ -28,7 +28,7 @@ public class IntakeWithTriggers extends CommandBase
     if (RobotContainer.controller.getLeftTriggerAxis() != 0)
       intake.setSpeed(RobotContainer.controller.getLeftTriggerAxis());
     if (RobotContainer.controller.getRightTriggerAxis() != 0)
-      intake.setSpeed(RobotContainer.controller.getRightTriggerAxis());
+      intake.setSpeed(-1 * RobotContainer.controller.getRightTriggerAxis());
   }
 
   // Called once the command ends or is interrupted.

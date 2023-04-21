@@ -7,10 +7,12 @@ package frc.robot;
 import frc.robot.Constants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.DriveWithJoystick;
+import frc.robot.commands.IntakeWithTriggers;
 import frc.robot.commands.ArmWithController;
 import frc.robot.commands.ArmtoSetpoint;
 import frc.robot.subsystems.ArmSubSystem;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Intake;
 
 import java.lang.ModuleLayer.Controller;
 
@@ -19,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 //import edu.wpi.first.wpilibj2.command.button.*;
 
@@ -30,7 +33,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  public static XboxController controller = new XboxController(1);
+  public static CommandXboxController controller = new CommandXboxController(1);
 
   public static DriveTrain drivetrain = new DriveTrain();
   public static DriveWithJoystick drivewithjoystick = new DriveWithJoystick(drivetrain);
@@ -39,20 +42,27 @@ public class RobotContainer {
   public static ArmWithController armController = new ArmWithController(arm);
   public static ArmtoSetpoint armSetpoint = new ArmtoSetpoint(arm);
 
+  public static Intake intake = new Intake();
+  public static IntakeWithTriggers intakeTriggers = new IntakeWithTriggers(intake); 
 
 
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
     drivetrain.setDefaultCommand(drivewithjoystick);
-    arm.setDefaultCommand((armSetpoint));
+    arm.setDefaultCommand((armController));
+    intake.setDefaultCommand(intakeTriggers);
     //arm.setSpeed(controller.getLeftY());
-    //Commands.startEnd(arm.seta, arm);
+ 
+    
   }
 
   private void configureBindings()
   {
-
+    controller.a().onTrue(armSetpoint);
+    controller.b().onTrue(armSetpoint);
+    controller.x().onTrue(armSetpoint);
+    controller.y().onTrue(armSetpoint);
   }
 
   public Command getAutonomousCommand() {

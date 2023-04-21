@@ -28,17 +28,16 @@ public class ArmtoSetpoint extends CommandBase {
   public void execute()
   {
     int armSetPoint = 0;
-    if (RobotContainer.controller.getBButtonPressed())
+    if (RobotContainer.controller.b().getAsBoolean())
       armSetPoint = 1000; //stowed
-    else if (RobotContainer.controller.getXButtonPressed())
+    else if (RobotContainer.controller.x().getAsBoolean())
       armSetPoint = 4000; //human player
-    else if (RobotContainer.controller.getYButtonPressed())
+    else if (RobotContainer.controller.y().getAsBoolean())
       armSetPoint = 3000; //high goal
-    else if (RobotContainer.controller.getAButtonPressed())
+    else if (RobotContainer.controller.a().getAsBoolean())
       armSetPoint = 6000; //ground goal
     arm.setPosition(armSetPoint);
 
-    arm.setSpeed((RobotContainer.controller.getRightY()) -0.3 / (0.7));
   }
 
   // Called once the command ends or is interrupted.

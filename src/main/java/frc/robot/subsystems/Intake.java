@@ -15,12 +15,13 @@ public class Intake extends SubsystemBase
 {
     //Making Motor Controllers
     CANSparkMax mLeftIntake = new CANSparkMax(Constants.LeftIntakeCANID, MotorType.kBrushless);
-    CANSparkMax mRightIntake = new CANSparkMax(Constants.LRightIntakeCANID, MotorType.kBrushless);
+    CANSparkMax mRightIntake = new CANSparkMax(Constants.RightIntakeCANID, MotorType.kBrushless);
 
     public Intake()
     {
         //Setting it to Follow
-        mRightIntake.follow(mLeftIntake, true);
+        mRightIntake.setInverted(false);
+        mLeftIntake.setInverted(false);
 
         //Resetting Factory Defaults
         mLeftIntake.restoreFactoryDefaults();
@@ -35,6 +36,7 @@ public class Intake extends SubsystemBase
     public void setSpeed(double speed)
     {
         mLeftIntake.set(speed);
+        mRightIntake.set(speed);
     }
 
 }

@@ -35,7 +35,7 @@ public final class Constants
       public static final double  kArmGearRatio = 228.5;
       public static final double  kLowGearRatio = 10.75;
     //PID Constants
-      public static final double kArmP = 0.2; //0.052272
+      public static final double kArmP = 0.05; //0.052272
       public static final double kArmI = 0;
       public static final double kArmD = 0;
       public static final double kArmFF = 0;
@@ -48,6 +48,6 @@ public final class Constants
   //Intake.java
       //CANIDS
       public static final int LeftIntakeCANID = 21;
-      public static final int LRightIntakeCANID = 22;
+      public static final int RightIntakeCANID = 22;
 
 }
