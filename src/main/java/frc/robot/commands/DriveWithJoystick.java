@@ -36,6 +36,6 @@ public class DriveWithJoystick extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (Math.abs(RobotContainer.controller.getLeftY()) <= 0.1 && Math.abs(RobotContainer.controller.getRightX()) <= 0.1);
   }
 }

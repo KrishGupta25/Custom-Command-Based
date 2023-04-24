@@ -47,6 +47,7 @@ public class ArmtoSetpoint extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (Math.abs(arm.mArmEncoder.getPosition() - arm.getPresetPosition()) <= 2);
+ 
   }
 }

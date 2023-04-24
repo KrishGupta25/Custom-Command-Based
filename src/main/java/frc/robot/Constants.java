@@ -27,6 +27,8 @@ public final class Constants
     public static final int LeftArmCANID = 31;
     public static final int RightArmCANID = 32;
 
+    public static double presetPosition = 0.0;
+
     //Constants for feedforward
       public static final double kArmS = 0.12855;
       public static final double kArmG = 0.14945;

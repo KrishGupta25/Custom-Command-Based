@@ -101,6 +101,7 @@ public void setPosition(int preset)
             }
         }
         System.out.println(position);
+        Constants.presetPosition = position;
         System.out.println(mLeftArm.getEncoder().getPosition());
 
         m_goal = new TrapezoidProfile.State(position, 0);
@@ -113,6 +114,10 @@ public void setPosition(int preset)
     }
 }
 
+public double getPresetPosition()
+{
+    return Constants.presetPosition;
+}
 
 public void brakeMode(Boolean input)
 {
