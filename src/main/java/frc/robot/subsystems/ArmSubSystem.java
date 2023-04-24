@@ -70,8 +70,7 @@ public ArmSubSystem()
 
 public void setPosition(int preset)
 {
-
-
+    //Taking input and picking the case
     if (preset != 0)
     {
         double position = 0;
@@ -82,7 +81,6 @@ public void setPosition(int preset)
                 position = 0;
                 break;
             case 2000: //mid goal
-                //mConeMode ? heightIfCone : heightIfCube;
                 position = -124.9;
                 break;
             case 3000: //high goal

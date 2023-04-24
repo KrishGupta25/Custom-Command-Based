@@ -33,7 +33,7 @@ public class ArmtoSetpoint extends CommandBase {
     else if (RobotContainer.controller.x().getAsBoolean())
       armSetPoint = 4000; //human player
     else if (RobotContainer.controller.y().getAsBoolean())
-      armSetPoint = 3000; //high goal
+       //high goal
     else if (RobotContainer.controller.a().getAsBoolean())
       armSetPoint = 6000; //ground goal
     arm.setPosition(armSetPoint);
