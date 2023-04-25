@@ -83,10 +83,10 @@ public void setPosition(int preset)
                 break;
             case 2000: //mid goal
                 //mConeMode ? heightIfCone : heightIfCube;
-                position = -124.9;
+                position = -38;
                 break;
             case 3000: //high goal
-                position = -180;
+                position = -140;
                 break;
             case 4000: //human player
                 position = -31.8; //-33.3 : -33.3
@@ -110,6 +110,12 @@ public void setPosition(int preset)
         //System.out.println("Set Point " + m_setpoin)
     
         mArmController.setReference(position, CANSparkMax.ControlType.kPosition, 0);
+
+        if(mLeftArm.getEncoder().getPosition() == position)
+        {
+            mLeftArm.setIdleMode(IdleMode.kBrake);
+            mRightArm.setIdleMode(IdleMode.kBrake);
+        }
     }
 }
 
@@ -135,10 +141,12 @@ public void setSpeed(double speed)
         if (speed < 0)
         {
             mLeftArm.set(speed*0.5);
+            System.out.print(mLeftArm.getEncoder().getPosition());
         }
         else
         {
             mLeftArm.set(speed);
+            System.out.print(mLeftArm.getEncoder().getPosition());
         }
 
 }

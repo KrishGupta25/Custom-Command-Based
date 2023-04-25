@@ -50,7 +50,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
     drivetrain.setDefaultCommand(drivewithjoystick);
-    arm.setDefaultCommand((armController));
+    arm.setDefaultCommand(armController);
     intake.setDefaultCommand(intakeTriggers);
     //arm.setSpeed(controller.getLeftY());
  
