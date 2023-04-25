@@ -8,17 +8,16 @@ import frc.robot.Constants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.IntakeWithTriggers;
+import frc.robot.commands.ArmSetPoints.ArmStowed;
+import frc.robot.commands.ArmSetPoints.ArmToGround;
+import frc.robot.commands.ArmSetPoints.ArmToHigh;
+import frc.robot.commands.ArmSetPoints.ArmToHuman;
 import frc.robot.commands.ArmWithController;
-import frc.robot.commands.ArmtoSetpoint;
 import frc.robot.subsystems.ArmSubSystem;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 
-import java.lang.ModuleLayer.Controller;
-
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Axis;
@@ -40,8 +39,11 @@ public class RobotContainer {
 
   public static ArmSubSystem arm = new ArmSubSystem();
   public static ArmWithController armController = new ArmWithController(arm);
-  public static ArmtoSetpoint armSetpoint = new ArmtoSetpoint(arm);
-  //public static ArmToHighGoal armHigh = new ArmToHighGoal(arm);
+  public static ArmStowed armStowed = new ArmStowed(arm);
+  public static ArmToHigh armHigh = new ArmToHigh(arm);
+  public static ArmToHuman armHuman = new ArmToHuman(arm);
+  public static ArmToGround armGround = new ArmToGround(arm);
+
 
   public static Intake intake = new Intake();
   public static IntakeWithTriggers intakeTriggers = new IntakeWithTriggers(intake); 
@@ -61,10 +63,10 @@ public class RobotContainer {
 
   private void configureBindings()
   {
-    controller.a().onTrue(armSetpoint);
-    controller.b().onTrue(armSetpoint);
-    controller.x().onTrue(armSetpoint);
-    controller.y().onTrue(armSetpoint);
+    controller.a().onTrue(armHuman);
+    controller.b().onTrue(armGround);
+    controller.x().onTrue(armGround);
+    controller.y().onTrue(armHigh);
   }
 
   public Command getAutonomousCommand() {

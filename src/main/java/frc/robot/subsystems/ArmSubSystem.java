@@ -68,32 +68,32 @@ public ArmSubSystem()
 
 }
 
-public void setPosition(int preset)
+public void setPosition(String preset)
 {
     //Taking input and picking the case
-    if (preset != 0)
+    if (!preset.equals(""))
     {
         double position = 0;
 
         switch (preset)
         {
-            case 1000: //stowed
+            case "stowed": //stowed
                 position = 0;
                 break;
-            case 2000: //mid goal
+            case "mid": //mid goal
                 //mConeMode ? heightIfCone : heightIfCube;
                 position = -38;
                 break;
-            case 3000: //high goal
+            case "high": //high goal
                 position = -120;
                 break;
-            case 4000: //human player
+            case "human": //human player
                 position = -31.8; //-33.3 : -33.3
                 break;
-            case 5000: //low goal
+            case "low": //low goal
                 position = -26.3;
                 break;
-            case 6000: //ground cube intake
+            case "ground": //ground cube intake
             {
                 position = - 98.47;
                 break;
