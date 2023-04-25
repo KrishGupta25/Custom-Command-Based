@@ -41,6 +41,7 @@ public class RobotContainer {
   public static ArmSubSystem arm = new ArmSubSystem();
   public static ArmWithController armController = new ArmWithController(arm);
   public static ArmtoSetpoint armSetpoint = new ArmtoSetpoint(arm);
+  //public static ArmToHighGoal armHigh = new ArmToHighGoal(arm);
 
   public static Intake intake = new Intake();
   public static IntakeWithTriggers intakeTriggers = new IntakeWithTriggers(intake); 
@@ -52,6 +53,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(drivewithjoystick);
     arm.setDefaultCommand(armController);
     intake.setDefaultCommand(intakeTriggers);
+    System.out.println("ARM ENCODER " + arm.mArmEncoder.getPosition());
     //arm.setSpeed(controller.getLeftY());
  
     

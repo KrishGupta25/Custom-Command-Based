@@ -38,6 +38,6 @@ public class ArmWithController extends CommandBase
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (Math.abs(RobotContainer.controller.getRightY()) <= 0.1);
   }
 }

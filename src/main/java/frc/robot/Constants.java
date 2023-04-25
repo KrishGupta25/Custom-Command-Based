@@ -27,6 +27,8 @@ public final class Constants
     public static final int LeftArmCANID = 31;
     public static final int RightArmCANID = 32;
 
+    public static double presetPosition = 0.0;
+
     //Constants for feedforward
       public static final double kArmS = 0.12855;
       public static final double kArmG = 0.14945;
@@ -37,7 +39,7 @@ public final class Constants
     //PID Constants
       public static final double kArmP = 0.05; //0.052272
       public static final double kArmI = 0;
-      public static final double kArmD = 0;
+      public static final double kArmD = 0.02;
       public static final double kArmFF = 0;
       public static final double kArmIZone = 0;
     //PID Max Constraints

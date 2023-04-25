@@ -70,8 +70,7 @@ public ArmSubSystem()
 
 public void setPosition(int preset)
 {
-
-
+    //Taking input and picking the case
     if (preset != 0)
     {
         double position = 0;
@@ -86,7 +85,7 @@ public void setPosition(int preset)
                 position = -38;
                 break;
             case 3000: //high goal
-                position = -140;
+                position = -120;
                 break;
             case 4000: //human player
                 position = -31.8; //-33.3 : -33.3
@@ -100,8 +99,9 @@ public void setPosition(int preset)
                 break;
             }
         }
-        System.out.println(position);
-        System.out.println(mLeftArm.getEncoder().getPosition());
+        System.out.println("Position from Subsystem " + position);
+        Constants.presetPosition = position;
+        System.out.println("Encoder Position from Subsystem " + mLeftArm.getEncoder().getPosition());
 
         m_goal = new TrapezoidProfile.State(position, 0);
         var profile = new TrapezoidProfile(m_constraints, m_goal, m_setpoint);
@@ -111,14 +111,20 @@ public void setPosition(int preset)
     
         mArmController.setReference(position, CANSparkMax.ControlType.kPosition, 0);
 
+        /*
         if(mLeftArm.getEncoder().getPosition() == position)
         {
             mLeftArm.setIdleMode(IdleMode.kBrake);
             mRightArm.setIdleMode(IdleMode.kBrake);
         }
+        */
     }
 }
 
+public double getPresetPosition()
+{
+    return Constants.presetPosition;
+}
 
 public void brakeMode(Boolean input)
 {

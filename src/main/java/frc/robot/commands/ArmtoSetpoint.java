@@ -38,6 +38,7 @@ public class ArmtoSetpoint extends CommandBase {
       armSetPoint = 6000; //ground goal
     arm.setPosition(armSetPoint);
 
+
   }
 
   // Called once the command ends or is interrupted.
@@ -47,6 +48,11 @@ public class ArmtoSetpoint extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if (Math.abs(Math.abs(arm.mArmEncoder.getPosition()) - Math.abs(arm.getPresetPosition())) == 0)
+    {
+      System.out.println("Hi ");
+      return true;
+    }
     return false;
   }
 }
