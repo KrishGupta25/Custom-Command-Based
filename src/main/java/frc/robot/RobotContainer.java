@@ -12,7 +12,7 @@ import frc.robot.commands.ArmSetPoints.ArmToHigh;
 import frc.robot.commands.ArmSetPoints.ArmToHuman;
 import frc.robot.commands.ArmWithController;
 import frc.robot.subsystems.ArmSubSystem;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.driveTrainSubSystem;
 import frc.robot.subsystems.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,7 +29,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static CommandXboxController controller = new CommandXboxController(1);
 
-  public static DriveTrain drivetrain = new DriveTrain();
+  public static driveTrainSubSystem drivetrain = new driveTrainSubSystem();
   public static DriveWithJoystick drivewithjoystick = new DriveWithJoystick(drivetrain);
 
   public static ArmSubSystem arm = new ArmSubSystem();

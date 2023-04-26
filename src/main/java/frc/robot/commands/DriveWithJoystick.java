@@ -6,13 +6,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.driveTrainSubSystem;
 
 
 public class DriveWithJoystick extends CommandBase {
-  private final DriveTrain drivetrain;
+  private final driveTrainSubSystem drivetrain;
 
-  public DriveWithJoystick(DriveTrain drivetrain) 
+  public DriveWithJoystick(driveTrainSubSystem drivetrain) 
   {
     this.drivetrain = drivetrain;
     addRequirements(drivetrain);

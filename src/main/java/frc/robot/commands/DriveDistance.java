@@ -5,15 +5,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.driveTrainSubSystem;
 
 public class DriveDistance extends CommandBase {
   /** Creates a new DriveDistance. */
-  private final DriveTrain drivetrain;
+  private final driveTrainSubSystem drivetrain;
   
-  public DriveDistance(DriveTrain drivetrain) 
+  public DriveDistance(driveTrainSubSystem Drivetrain) 
   {
-    this.drivetrain = drivetrain;
+    this.drivetrain = Drivetrain;
     addRequirements(drivetrain);
     // Use addRequirements() here to declare subsystem dependencies.
   }

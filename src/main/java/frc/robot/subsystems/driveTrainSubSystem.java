@@ -16,7 +16,7 @@ import frc.robot.Constants;
 
 import java.lang.Math;
 
-public class DriveTrain extends SubsystemBase
+public class driveTrainSubSystem extends SubsystemBase
 {
     //Initializes all motor controllers
     CANSparkMax mLeftMaster = new CANSparkMax(Constants.LeftMasterCANID, MotorType.kBrushless);
@@ -37,7 +37,7 @@ public class DriveTrain extends SubsystemBase
 
   
 
-  public DriveTrain() 
+  public driveTrainSubSystem() 
   {
     //Restarting Everything to Factory Defualt
     mLeftMaster.restoreFactoryDefaults();
