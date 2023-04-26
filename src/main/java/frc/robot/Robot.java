@@ -20,7 +20,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
-  private final ArmSubSystem arm = new ArmSubSystem();
+  //private final ArmSubSystem arm = new ArmSubSystem();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -96,7 +96,7 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic()
   {
-    System.out.print(arm.mArmEncoder.getPosition());
+    //System.out.print(arm.mArmEncoder.getPosition());
   }
 
   /** This function is called once when the robot is first started up. */

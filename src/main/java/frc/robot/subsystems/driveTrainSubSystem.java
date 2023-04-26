@@ -4,14 +4,22 @@
 
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import edu.wpi.first.util.sendable.Sendable; 
 import frc.robot.Constants;
 
 import java.lang.Math;
@@ -35,8 +43,19 @@ public class driveTrainSubSystem extends SubsystemBase
     //Making a Differential DriveTrain
     DifferentialDrive mDrivetrain = new DifferentialDrive(mLeftMotorControllerGroup, mRightMotorControllerGroup);
 
-  
+    SparkMaxPIDController mLeftController = mLeftMaster.getPIDController();
+    SparkMaxPIDController mRightController = mRightMaster.getPIDController();
 
+    PIDController mTurnPIDController = new PIDController(Constants.kTurnP, 0, 0);
+
+    //Making Trapezoidal Motion Profiling Parts
+    private final TrapezoidProfile.Constraints m_constraints = new TrapezoidProfile.Constraints(60, 60);
+    private TrapezoidProfile.State m_goal = new TrapezoidProfile.State(); //Making Goal
+    private TrapezoidProfile.State m_setpoint = new TrapezoidProfile.State(); //Making Setpoint
+
+    AHRS gyro = new AHRS(SPI.Port.kMXP);
+
+  
   public driveTrainSubSystem() 
   {
     //Restarting Everything to Factory Defualt
@@ -44,10 +63,28 @@ public class driveTrainSubSystem extends SubsystemBase
     mLeftSlave.restoreFactoryDefaults();
     mRightMaster.restoreFactoryDefaults();
     mRightSlave.restoreFactoryDefaults();
+        
+    //Current Limits Motors
+    mLeftMaster.setSmartCurrentLimit(80);
+    mLeftSlave.setSmartCurrentLimit(80);
+    mRightMaster.setSmartCurrentLimit(80);
+    mRightSlave.setSmartCurrentLimit(80);
 
-    //Resetting Encoders Position
+    //Setting IdleMode
+    mLeftMaster.setIdleMode(IdleMode.kBrake);
+    mLeftSlave.setIdleMode(IdleMode.kBrake);
+    mRightMaster.setIdleMode(IdleMode.kBrake);
+    mRightSlave.setIdleMode(IdleMode.kBrake);
+
+    //Setting Encoder Position
     mLeftEncoder.setPosition(0);
+    mLeftEncoder.setPositionConversionFactor((Constants.kWheelDiameter*Math.PI)/Constants.kLowGearRatio);
+    mLeftEncoder.setVelocityConversionFactor((Constants.kWheelDiameter*Math.PI)/Constants.kLowGearRatio/60);
+
     mRightEncoder.setPosition(0);
+    mRightEncoder.setPositionConversionFactor((Constants.kWheelDiameter*Math.PI)/Constants.kLowGearRatio);
+    mRightEncoder.setVelocityConversionFactor((Constants.kWheelDiameter*Math.PI)/Constants.kLowGearRatio/60);
+
 
     //Sets all of them to follow respective ones
     mLeftSlave.follow(mLeftMaster);
@@ -56,14 +93,17 @@ public class driveTrainSubSystem extends SubsystemBase
     //Sets left side to be inverted
     mLeftMotorControllerGroup.setInverted(true);
     mRightMotorControllerGroup.setInverted(false);
-    
-    //Current Limits Motors
-    mLeftMaster.setSmartCurrentLimit(80);
-    mLeftSlave.setSmartCurrentLimit(80);
-    mRightMaster.setSmartCurrentLimit(80);
-    mRightSlave.setSmartCurrentLimit(80);
 
 
+    mLeftController.setP(Constants.kP);
+    mLeftController.setFF(Constants.kF);
+
+    mRightController.setP(Constants.kP);
+    mRightController.setFF(Constants.kF);
+
+  
+    mTurnPIDController.enableContinuousInput(-180, 180);
+    mTurnPIDController.setTolerance(1, 1);
   }
 
 
@@ -106,6 +146,18 @@ public class driveTrainSubSystem extends SubsystemBase
      drive(leftOutput/scalingFactor, rightOutput/scalingFactor);
 
     
+  }
+
+  public void turnToAngle(double angle)
+  {
+    //mLeftMaster.set(mTurnPIDController.calculate(gyro.getYaw(), angle))
+    m_goal = new TrapezoidProfile.State(angle, 0);
+    //double turnToAnglePower = mTurnPIDController.calculate(gyro.getYaw(), angle);
+    var profile = new TrapezoidProfile(m_constraints, m_goal, m_setpoint);
+    m_setpoint = profile.calculate(Constants.kDt);
+    
+    mLeftController.setReference(angle, CANSparkMax.ControlType.kDutyCycle, 0);
+   // mRightController.SetReference(turnToAnglePower, rev::CANSparkMax::ControlType::kDutyCycle);
   }
 
   @Override

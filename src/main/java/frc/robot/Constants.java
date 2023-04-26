@@ -14,13 +14,26 @@ package frc.robot;
  */
 public final class Constants
 {
+  //PID Constants
+    public static final double kDt = 0.02;
+    
+
   //DriveTain.java
     //CANIDS
       public static final int LeftMasterCANID = 11;
       public static final int LeftSlaveCANID = 13;
       public static final int RightMasterCANID = 12;
       public static final int RightSlaveCANID = 14;
-      public static final int mainControllerPort = 0;    
+      public static final int mainControllerPort = 0; 
+      
+    // PIDs
+    public static final double kP = 0.00025637;
+    public static final double kF = 0.2380952380952381;
+
+    public static final double kWheelDiameter = 0.1524;
+
+    public static final double kTurnP = 1/180; //max output/max error
+    public static final double kAutoP = 3.6/13;
 
   //Arm.java 
     //CANDIS

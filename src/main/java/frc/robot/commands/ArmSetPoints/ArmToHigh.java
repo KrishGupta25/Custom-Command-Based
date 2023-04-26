@@ -36,7 +36,7 @@ public class ArmToHigh extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (Math.abs(Math.abs(arm.mArmEncoder.getPosition()) - Math.abs(arm.getPresetPosition())) == 0)
+    if (Math.abs(Math.abs(arm.mArmEncoder.getPosition()) - Math.abs(arm.getPresetPosition())) <= 0.5)
     {
       System.out.println("Arm to Position High Done!");
       return true;

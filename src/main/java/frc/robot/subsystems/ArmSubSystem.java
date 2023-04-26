@@ -35,7 +35,6 @@ public class ArmSubSystem extends SubsystemBase
     private TrapezoidProfile.State m_goal = new TrapezoidProfile.State(); //Making Goal
     private TrapezoidProfile.State m_setpoint = new TrapezoidProfile.State(); //Making Setpoint
 
-    final private static double kDt = 0.02;
          
 public ArmSubSystem()
 {
@@ -84,6 +83,7 @@ public void setPosition(String preset)
             case "high": //high goal
                 position = -120;
                 break;
+
             case "human": //human player
                 position = -31.8;
                 break;
@@ -103,7 +103,7 @@ public void setPosition(String preset)
         Constants.presetPosition = position;
         m_goal = new TrapezoidProfile.State(position, 0);
         var profile = new TrapezoidProfile(m_constraints, m_goal, m_setpoint);
-        m_setpoint = profile.calculate(kDt);
+        m_setpoint = profile.calculate(Constants.kDt);
         
    
         mArmController.setReference(position, CANSparkMax.ControlType.kPosition, 0);

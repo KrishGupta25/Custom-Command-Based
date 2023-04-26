@@ -10,9 +10,7 @@ import frc.robot.subsystems.driveTrainSubSystem;
 public class DriveDistance extends CommandBase {
   /** Creates a new DriveDistance. */
   private final driveTrainSubSystem drivetrain;
-  
-  public DriveDistance(driveTrainSubSystem Drivetrain) 
-  {
+  public DriveDistance(driveTrainSubSystem Drivetrain) {
     this.drivetrain = Drivetrain;
     addRequirements(drivetrain);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -24,7 +22,10 @@ public class DriveDistance extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() 
+  {
+    drivetrain.turnToAngle(60);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
