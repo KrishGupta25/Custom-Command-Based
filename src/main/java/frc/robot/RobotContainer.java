@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import frc.robot.Constants;
-import frc.robot.commands.Autos;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.IntakeWithTriggers;
 import frc.robot.commands.ArmSetPoints.ArmStowed;
@@ -19,9 +17,6 @@ import frc.robot.subsystems.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Axis;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 //import edu.wpi.first.wpilibj2.command.button.*;
 
 /**

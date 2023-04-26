@@ -3,10 +3,9 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands.ArmSetPoints;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
 import frc.robot.subsystems.ArmSubSystem;
+
 
 public class ArmStowed extends CommandBase {
   /** Creates a new ArmtoSetpoint. */
@@ -32,7 +31,8 @@ public class ArmStowed extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted){}
+
 
   // Returns true when the command should end.`
   @Override

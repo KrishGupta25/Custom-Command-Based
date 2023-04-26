@@ -4,29 +4,22 @@
 
 package frc.robot.subsystems;
 
-import com.fasterxml.jackson.databind.deser.NullValueProvider;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.TrapezoidProfileCommand;
-import edu.wpi.first.wpilibj2.command.TrapezoidProfileSubsystem;
-import edu.wpi.first.hal.simulation.REVPHDataJNI;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.trajectory.Trajectory.State;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 
 /** Add your docs here. */
 public class ArmSubSystem extends SubsystemBase
 {
     //Making The Motor Controllers
-    CANSparkMax mLeftArm = new CANSparkMax(Constants.LeftArmCANID, MotorType.kBrushless);
-    CANSparkMax mRightArm = new CANSparkMax(Constants.RightArmCANID, MotorType.kBrushless);
+    public CANSparkMax mLeftArm = new CANSparkMax(Constants.LeftArmCANID, MotorType.kBrushless);
+    public CANSparkMax mRightArm = new CANSparkMax(Constants.RightArmCANID, MotorType.kBrushless);
     
     //Making The Encoders
     public RelativeEncoder mArmEncoder = mLeftArm.getEncoder();
@@ -37,10 +30,10 @@ public class ArmSubSystem extends SubsystemBase
     //Making Arm PID Controller 
     SparkMaxPIDController mArmController = mLeftArm.getPIDController();
 
+    //Making Trapezoidal Motion Profiling Parts
     private final TrapezoidProfile.Constraints m_constraints = new TrapezoidProfile.Constraints(80, 120);
-    private TrapezoidProfile.State m_goal = new TrapezoidProfile.State();
-
-    private TrapezoidProfile.State m_setpoint = new TrapezoidProfile.State();
+    private TrapezoidProfile.State m_goal = new TrapezoidProfile.State(); //Making Goal
+    private TrapezoidProfile.State m_setpoint = new TrapezoidProfile.State(); //Making Setpoint
 
     final private static double kDt = 0.02;
          
@@ -59,14 +52,19 @@ public ArmSubSystem()
 
     //Current Limits Motors
     mLeftArm.setSmartCurrentLimit(20);
-    mRightArm.setSmartCurrentLimit(25);
+    mRightArm.setSmartCurrentLimit(20);
 
     //Setting PID Values
     mArmController.setP(Constants.kArmP);
     mArmController.setI(Constants.kArmI);
-    mArmController.setD(Constants.kArmD);   
+    mArmController.setD(Constants.kArmD);  
+    
+    //Setting to Brake Mode
+    mLeftArm.setIdleMode(IdleMode.kBrake);
+    mRightArm.setIdleMode(IdleMode.kBrake);
 
 }
+
 
 public void setPosition(String preset)
 {
@@ -81,14 +79,13 @@ public void setPosition(String preset)
                 position = 0;
                 break;
             case "mid": //mid goal
-                //mConeMode ? heightIfCone : heightIfCube;
                 position = -38;
                 break;
             case "high": //high goal
                 position = -120;
                 break;
             case "human": //human player
-                position = -31.8; //-33.3 : -33.3
+                position = -31.8;
                 break;
             case "low": //low goal
                 position = -26.3;
@@ -99,25 +96,18 @@ public void setPosition(String preset)
                 break;
             }
         }
+
         System.out.println("Position from Subsystem " + position);
-        Constants.presetPosition = position;
         System.out.println("Encoder Position from Subsystem " + mLeftArm.getEncoder().getPosition());
 
+        Constants.presetPosition = position;
         m_goal = new TrapezoidProfile.State(position, 0);
         var profile = new TrapezoidProfile(m_constraints, m_goal, m_setpoint);
         m_setpoint = profile.calculate(kDt);
         
-        //System.out.println("Set Point " + m_setpoin)
-    
+   
         mArmController.setReference(position, CANSparkMax.ControlType.kPosition, 0);
 
-        /*
-        if(mLeftArm.getEncoder().getPosition() == position)
-        {
-            mLeftArm.setIdleMode(IdleMode.kBrake);
-            mRightArm.setIdleMode(IdleMode.kBrake);
-        }
-        */
     }
 }
 
@@ -126,12 +116,15 @@ public double getPresetPosition()
     return Constants.presetPosition;
 }
 
+
 public void brakeMode(Boolean input)
 {
-    if (input) {
+    if (input) 
+    {
         mLeftArm.setIdleMode(CANSparkMax.IdleMode.kBrake);
         mLeftArm.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    } else {
+    } else
+    {
         mLeftArm.setIdleMode(CANSparkMax.IdleMode.kCoast);
         mLeftArm.setIdleMode(CANSparkMax.IdleMode.kCoast);
     }
@@ -154,7 +147,6 @@ public void setSpeed(double speed)
             mLeftArm.set(speed);
             System.out.print(mLeftArm.getEncoder().getPosition());
         }
-
 }
 }
 
