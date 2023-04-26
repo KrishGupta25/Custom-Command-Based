@@ -37,13 +37,13 @@ public class driveTrainSubSystem extends SubsystemBase
     MotorControllerGroup mRightMotorControllerGroup = new MotorControllerGroup(mRightMaster, mRightSlave);
 
     //Creating Encoders for The Motors
-    RelativeEncoder mLeftEncoder = mLeftMaster.getEncoder();
+    public RelativeEncoder mLeftEncoder = mLeftMaster.getEncoder();
     RelativeEncoder mRightEncoder = mRightMaster.getEncoder();
 
     //Making a Differential DriveTrain
     DifferentialDrive mDrivetrain = new DifferentialDrive(mLeftMotorControllerGroup, mRightMotorControllerGroup);
 
-    SparkMaxPIDController mLeftController = mLeftMaster.getPIDController();
+    public SparkMaxPIDController mLeftController = mLeftMaster.getPIDController();
     SparkMaxPIDController mRightController = mRightMaster.getPIDController();
 
     PIDController mTurnPIDController = new PIDController(Constants.kTurnP, 0, 0);
@@ -150,14 +150,23 @@ public class driveTrainSubSystem extends SubsystemBase
 
   public void turnToAngle(double angle)
   {
-    //mLeftMaster.set(mTurnPIDController.calculate(gyro.getYaw(), angle))
+    Constants.turnAngle = angle;
+    System.out.println("Goal Angle " + angle);
+    System.out.println("Encoder Position from Subsystem " + mLeftEncoder.getPosition());
+
     m_goal = new TrapezoidProfile.State(angle, 0);
-    //double turnToAnglePower = mTurnPIDController.calculate(gyro.getYaw(), angle);
     var profile = new TrapezoidProfile(m_constraints, m_goal, m_setpoint);
     m_setpoint = profile.calculate(Constants.kDt);
-    
-    mLeftController.setReference(angle, CANSparkMax.ControlType.kDutyCycle, 0);
-   // mRightController.SetReference(turnToAnglePower, rev::CANSparkMax::ControlType::kDutyCycle);
+    double angleSpeed = m_setpoint.velocity;
+
+    mLeftController.setReference(angleSpeed, CANSparkMax.ControlType.kVelocity, 0);
+    mRightController.setReference(-angleSpeed, CANSparkMax.ControlType.kVelocity, 0);
+
+  }
+
+  public double getAngle()
+  {
+    return Constants.turnAngle;
   }
 
   @Override

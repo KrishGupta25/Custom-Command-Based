@@ -7,11 +7,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.driveTrainSubSystem;
 
-public class DriveDistance extends CommandBase {
+public class TurnToAngle90 extends CommandBase {
   /** Creates a new DriveDistance. */
+
   private final driveTrainSubSystem drivetrain;
-  public DriveDistance(driveTrainSubSystem Drivetrain) {
-    this.drivetrain = Drivetrain;
+  public TurnToAngle90(driveTrainSubSystem drivetrain) {
+    this.drivetrain = drivetrain;
     addRequirements(drivetrain);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -24,7 +25,7 @@ public class DriveDistance extends CommandBase {
   @Override
   public void execute() 
   {
-    drivetrain.turnToAngle(60);
+    drivetrain.turnToAngle(90);
   }
 
   // Called once the command ends or is interrupted.
@@ -34,6 +35,11 @@ public class DriveDistance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if(Math.abs(Math.abs(drivetrain.mLeftEncoder.getPosition()) - Math.abs(drivetrain.getAngle())) <= 0.5)
+    {
+      System.out.println("Drivetrain to " + drivetrain.getAngle() + "done!");
+      return true;
+    }
     return false;
   }
 }

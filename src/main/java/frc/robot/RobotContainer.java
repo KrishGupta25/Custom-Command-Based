@@ -11,7 +11,7 @@ import frc.robot.commands.ArmSetPoints.ArmToGround;
 import frc.robot.commands.ArmSetPoints.ArmToHigh;
 import frc.robot.commands.ArmSetPoints.ArmToHuman;
 import frc.robot.commands.ArmWithController;
-import frc.robot.commands.DriveDistance;
+import frc.robot.commands.TurnToAngle90;
 import frc.robot.subsystems.ArmSubSystem;
 import frc.robot.subsystems.driveTrainSubSystem;
 import frc.robot.subsystems.Intake;
@@ -40,7 +40,7 @@ public class RobotContainer {
   public static ArmToHuman armHuman = new ArmToHuman(arm);
   public static ArmToGround armGround = new ArmToGround(arm);
 
-  public static DriveDistance turn = new DriveDistance(drivetrain);
+  public static TurnToAngle90 turn90 = new TurnToAngle90(drivetrain);
 
   public static Intake intake = new Intake();
   public static IntakeWithTriggers intakeTriggers = new IntakeWithTriggers(intake); 
@@ -52,18 +52,18 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(drivewithjoystick);
     arm.setDefaultCommand(armController);
     intake.setDefaultCommand(intakeTriggers);
-    System.out.println("ARM ENCODER " + arm.mArmEncoder.getPosition());
-    //arm.setSpeed(controller.getLeftY());
- 
+     
     
   }
 
   private void configureBindings()
   {
-    controller.a().onTrue(turn);
+    controller.a().onTrue(armHuman);
     controller.b().onTrue(armStowed);
     controller.x().onTrue(armGround);
     controller.y().onTrue(armHigh);
+
+    controller.povLeft().onTrue(turn90);
   }
 
   public Command getAutonomousCommand() {

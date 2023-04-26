@@ -98,15 +98,17 @@ public void setPosition(String preset)
         }
 
         System.out.println("Position from Subsystem " + position);
-        System.out.println("Encoder Position from Subsystem " + mLeftArm.getEncoder().getPosition());
+        System.out.println("Encoder Position from Subsystem " + mArmEncoder.getPosition());
+        
 
         Constants.presetPosition = position;
         m_goal = new TrapezoidProfile.State(position, 0);
         var profile = new TrapezoidProfile(m_constraints, m_goal, m_setpoint);
         m_setpoint = profile.calculate(Constants.kDt);
+        double armSpeed = m_setpoint.velocity;
         
    
-        mArmController.setReference(position, CANSparkMax.ControlType.kPosition, 0);
+        mArmController.setReference(armSpeed, CANSparkMax.ControlType.kVelocity, 0);
 
     }
 }
