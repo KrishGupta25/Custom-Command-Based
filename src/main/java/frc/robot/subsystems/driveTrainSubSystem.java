@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.util.sendable.Sendable; 
 import frc.robot.Constants;
@@ -43,17 +44,19 @@ public class driveTrainSubSystem extends SubsystemBase
     //Making a Differential DriveTrain
     DifferentialDrive mDrivetrain = new DifferentialDrive(mLeftMotorControllerGroup, mRightMotorControllerGroup);
 
-    public SparkMaxPIDController mLeftController = mLeftMaster.getPIDController();
+    SparkMaxPIDController mLeftController = mLeftMaster.getPIDController();
     SparkMaxPIDController mRightController = mRightMaster.getPIDController();
-
-    PIDController mTurnPIDController = new PIDController(Constants.kTurnP, 0, 0);
 
     //Making Trapezoidal Motion Profiling Parts
     private final TrapezoidProfile.Constraints m_constraints = new TrapezoidProfile.Constraints(60, 60);
     private TrapezoidProfile.State m_goal = new TrapezoidProfile.State(); //Making Goal
     private TrapezoidProfile.State m_setpoint = new TrapezoidProfile.State(); //Making Setpoint
 
-    AHRS gyro = new AHRS(SPI.Port.kMXP);
+    ProfiledPIDController mTurnPIDController = new ProfiledPIDController(Constants.kTurnP, 0, 0, m_constraints);
+
+
+    public AHRS gyro = new AHRS(SPI.Port.kMXP);
+    
 
   
   public driveTrainSubSystem() 
@@ -96,14 +99,26 @@ public class driveTrainSubSystem extends SubsystemBase
 
 
     mLeftController.setP(Constants.kP);
-    mLeftController.setFF(Constants.kF);
+    //mLeftController.setFF(Constants.kF);
+
+    mLeftController.setOutputRange(-180, 180);
+    mLeftController.setSmartMotionAllowedClosedLoopError(1, 0);
+
 
     mRightController.setP(Constants.kP);
-    mRightController.setFF(Constants.kF);
+    //mRightController.setFF(0.0);//Constants.kF);
 
+    mRightController.setOutputRange(-180, 180);
+    mRightController.setSmartMotionAllowedClosedLoopError(1, 0);
   
     mTurnPIDController.enableContinuousInput(-180, 180);
     mTurnPIDController.setTolerance(1, 1);
+
+
+    gyro.zeroYaw();
+    System.out.println("Gyro Intial Value HIII" + gyro.getYaw());
+
+
   }
 
 
@@ -121,7 +136,7 @@ public class driveTrainSubSystem extends SubsystemBase
 
   public void cheesyDrive(double throttle, double wheel, Boolean isQuickTurn)
   {
-
+    //gyro.getYaw();
     double scaledThrottle = (throttle + (throttle < 0 ? 0.075 : -0.075)) / (1 - 0.075);
     throttle = (Math.abs(throttle) > 0.075) ? scaledThrottle : 0;
 
@@ -150,18 +165,29 @@ public class driveTrainSubSystem extends SubsystemBase
 
   public void turnToAngle(double angle)
   {
+
     Constants.turnAngle = angle;
     System.out.println("Goal Angle " + angle);
-    System.out.println("Encoder Position from Subsystem " + mLeftEncoder.getPosition());
+    System.out.println("Gyro Angle YAW (TurntoAngle) " + gyro.getYaw());
 
+    m_goal = new TrapezoidProfile.State(angle, 0);
+    var profile = new TrapezoidProfile(m_constraints, m_goal, m_setpoint);
+    m_setpoint = profile.calculate(Constants.kDt);
+    double turnSpeed = m_setpoint.velocity;
+        
+    System.out.println("Turn Speed " + turnSpeed);
+
+    mLeftController.setReference(turnSpeed, CANSparkMax.ControlType.kVoltage, 0);
+    mRightController.setReference(turnSpeed, CANSparkMax.ControlType.kVoltage, 0);
+    /*
     m_goal = new TrapezoidProfile.State(angle, 0);
     var profile = new TrapezoidProfile(m_constraints, m_goal, m_setpoint);
     m_setpoint = profile.calculate(Constants.kDt);
     double angleSpeed = m_setpoint.velocity;
 
-    mLeftController.setReference(angleSpeed, CANSparkMax.ControlType.kVelocity, 0);
-    mRightController.setReference(-angleSpeed, CANSparkMax.ControlType.kVelocity, 0);
-
+    mLeftController.setReference(angleSpeed, CANSparkMax.ControlType.kDutyCycle, 0);
+    mRightController.setReference(angleSpeed, CANSparkMax.ControlType.kDutyCycle, 0);
+    */
   }
 
   public double getAngle()

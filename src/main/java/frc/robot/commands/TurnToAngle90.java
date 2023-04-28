@@ -19,13 +19,16 @@ public class TurnToAngle90 extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() 
+  {
+    drivetrain.gyro.zeroYaw();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() 
   {
-    drivetrain.turnToAngle(90);
+    drivetrain.turnToAngle(180);
   }
 
   // Called once the command ends or is interrupted.
@@ -35,8 +38,9 @@ public class TurnToAngle90 extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Math.abs(Math.abs(drivetrain.mLeftEncoder.getPosition()) - Math.abs(drivetrain.getAngle())) <= 0.5)
+    if(Math.abs(Math.abs(drivetrain.gyro.getYaw()) - Math.abs(drivetrain.getAngle())) <= 0.5)
     {
+      System.out.println("Gyro Angle YAW (Turn) " + drivetrain.gyro.getYaw());
       System.out.println("Drivetrain to " + drivetrain.getAngle() + "done!");
       return true;
     }

@@ -17,10 +17,11 @@ public final class Constants
   //PID Constants
     public static final double kDt = 0.02;
     //Drivetrain
-      public static final double kP = 0.0025637;
-      public static final double kF = 0.2380952380952381;
+      public static final double kP = 0.007;
+      public static final double kD = 0.0;
+      public static final double kF = 0.02380952380952381;
       public static final double kWheelDiameter = 0.1524;
-      public static final double kTurnP = 1/180; //max output/max error
+      public static final double kTurnP = 0;//0.000005; //max output/max error
       public static final double kAutoP = 3.6/13;
     //Arm
       public static final double kArmP = 0.05; //0.052272

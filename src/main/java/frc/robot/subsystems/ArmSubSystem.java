@@ -31,7 +31,7 @@ public class ArmSubSystem extends SubsystemBase
     SparkMaxPIDController mArmController = mLeftArm.getPIDController();
 
     //Making Trapezoidal Motion Profiling Parts
-    private final TrapezoidProfile.Constraints m_constraints = new TrapezoidProfile.Constraints(80, 120);
+    private final TrapezoidProfile.Constraints m_constraints = new TrapezoidProfile.Constraints(360, 360);
     private TrapezoidProfile.State m_goal = new TrapezoidProfile.State(); //Making Goal
     private TrapezoidProfile.State m_setpoint = new TrapezoidProfile.State(); //Making Setpoint
 
@@ -105,10 +105,10 @@ public void setPosition(String preset)
         m_goal = new TrapezoidProfile.State(position, 0);
         var profile = new TrapezoidProfile(m_constraints, m_goal, m_setpoint);
         m_setpoint = profile.calculate(Constants.kDt);
-        double armSpeed = m_setpoint.velocity;
+        double armSpeed = m_setpoint.position;
         
    
-        mArmController.setReference(armSpeed, CANSparkMax.ControlType.kVelocity, 0);
+        mArmController.setReference(armSpeed, CANSparkMax.ControlType.kPosition, 0);
 
     }
 }
