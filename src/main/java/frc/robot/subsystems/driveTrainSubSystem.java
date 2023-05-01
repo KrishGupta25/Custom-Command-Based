@@ -48,30 +48,29 @@ public class driveTrainSubSystem extends SubsystemBase
     SparkMaxPIDController mRightController = mRightMaster.getPIDController();
 
     //Making Trapezoidal Motion Profiling Parts
-    private final TrapezoidProfile.Constraints m_constraints = new TrapezoidProfile.Constraints(60, 60);
+    private final TrapezoidProfile.Constraints m_constraints = new TrapezoidProfile.Constraints(60, 120);
     private TrapezoidProfile.State m_goal = new TrapezoidProfile.State(); //Making Goal
     private TrapezoidProfile.State m_setpoint = new TrapezoidProfile.State(); //Making Setpoint
 
-    ProfiledPIDController mTurnPIDController = new ProfiledPIDController(Constants.kTurnP, 0, 0, m_constraints);
-
-
+    ProfiledPIDController turnPIDController = new ProfiledPIDController(Constants.kTurnP, 0, Constants.kTurnD, m_constraints);
+    
     public AHRS gyro = new AHRS(SPI.Port.kMXP);
     
 
   
   public driveTrainSubSystem() 
   {
-    //Restarting Everything to Factory Defualt
-    mLeftMaster.restoreFactoryDefaults();
-    mLeftSlave.restoreFactoryDefaults();
-    mRightMaster.restoreFactoryDefaults();
-    mRightSlave.restoreFactoryDefaults();
-        
     //Current Limits Motors
     mLeftMaster.setSmartCurrentLimit(80);
     mLeftSlave.setSmartCurrentLimit(80);
     mRightMaster.setSmartCurrentLimit(80);
     mRightSlave.setSmartCurrentLimit(80);
+
+    //Restarting Everything to Factory Defualt
+    mLeftMaster.restoreFactoryDefaults();
+    mLeftSlave.restoreFactoryDefaults();
+    mRightMaster.restoreFactoryDefaults();
+    mRightSlave.restoreFactoryDefaults();
 
     //Setting IdleMode
     mLeftMaster.setIdleMode(IdleMode.kBrake);
@@ -98,27 +97,28 @@ public class driveTrainSubSystem extends SubsystemBase
     mRightMotorControllerGroup.setInverted(false);
 
 
-    mLeftController.setP(Constants.kP);
+    mLeftController.setP(Constants.kTurnP);
+    mLeftController.setD(Constants.kTurnD);
     //mLeftController.setFF(Constants.kF);
 
-    mLeftController.setOutputRange(-180, 180);
-    mLeftController.setSmartMotionAllowedClosedLoopError(1, 0);
+    //mLeftController.setOutputRange(-180, 180);
+    //mLeftController.setSmartMotionAllowedClosedLoopError(1, 0);
+    turnPIDController.enableContinuousInput(-180, 180);
+    turnPIDController.setTolerance(1, 1);
 
 
-    mRightController.setP(Constants.kP);
+    mRightController.setP(Constants.kTurnP);
+    mRightController.setD(Constants.kTurnD);
     //mRightController.setFF(0.0);//Constants.kF);
 
-    mRightController.setOutputRange(-180, 180);
-    mRightController.setSmartMotionAllowedClosedLoopError(1, 0);
+    //mRightController.setOutputRange(-180, 180);
+    //mRightController.setSmartMotionAllowedClosedLoopError(1, 0);
   
-    mTurnPIDController.enableContinuousInput(-180, 180);
-    mTurnPIDController.setTolerance(1, 1);
+
 
 
     gyro.zeroYaw();
-    System.out.println("Gyro Intial Value HIII" + gyro.getYaw());
-
-
+  
   }
 
 
@@ -171,14 +171,17 @@ public class driveTrainSubSystem extends SubsystemBase
     System.out.println("Gyro Angle YAW (TurntoAngle) " + gyro.getYaw());
 
     m_goal = new TrapezoidProfile.State(angle, 0);
-    var profile = new TrapezoidProfile(m_constraints, m_goal, m_setpoint);
-    m_setpoint = profile.calculate(Constants.kDt);
-    double turnSpeed = m_setpoint.velocity;
+  
+    //var profile = new TrapezoidProfile(m_constraints, m_goal, m_setpoint);
+    //m_setpoint = profile.calculate(gyro.getYaw());
+    //double turnSpeed = m_setpoint.velocity;
+    double turnSpeed = turnPIDController.calculate(gyro.getYaw(), angle);
         
     System.out.println("Turn Speed " + turnSpeed);
+ 
 
-    mLeftController.setReference(turnSpeed, CANSparkMax.ControlType.kVoltage, 0);
-    mRightController.setReference(turnSpeed, CANSparkMax.ControlType.kVoltage, 0);
+    mLeftController.setReference(turnSpeed, CANSparkMax.ControlType.kDutyCycle, 0);
+    mRightController.setReference(turnSpeed, CANSparkMax.ControlType.kDutyCycle, 0);
     /*
     m_goal = new TrapezoidProfile.State(angle, 0);
     var profile = new TrapezoidProfile(m_constraints, m_goal, m_setpoint);
