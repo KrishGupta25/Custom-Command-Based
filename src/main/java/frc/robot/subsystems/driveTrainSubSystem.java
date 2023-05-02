@@ -44,15 +44,9 @@ public class driveTrainSubSystem extends SubsystemBase
     //Making a Differential DriveTrain
     DifferentialDrive mDrivetrain = new DifferentialDrive(mLeftMotorControllerGroup, mRightMotorControllerGroup);
 
-    SparkMaxPIDController mLeftController = mLeftMaster.getPIDController();
-    SparkMaxPIDController mRightController = mRightMaster.getPIDController();
 
     //Making Trapezoidal Motion Profiling Parts
-    private final TrapezoidProfile.Constraints m_constraints = new TrapezoidProfile.Constraints(60, 120);
-    private TrapezoidProfile.State m_goal = new TrapezoidProfile.State(); //Making Goal
-    private TrapezoidProfile.State m_setpoint = new TrapezoidProfile.State(); //Making Setpoint
-
-    ProfiledPIDController turnPIDController = new ProfiledPIDController(Constants.kTurnP, 0, Constants.kTurnD, m_constraints);
+    
     
     public AHRS gyro = new AHRS(SPI.Port.kMXP);
     
@@ -95,27 +89,6 @@ public class driveTrainSubSystem extends SubsystemBase
     //Sets left side to be inverted
     mLeftMotorControllerGroup.setInverted(true);
     mRightMotorControllerGroup.setInverted(false);
-
-
-    mLeftController.setP(Constants.kTurnP);
-    mLeftController.setD(Constants.kTurnD);
-    //mLeftController.setFF(Constants.kF);
-
-    //mLeftController.setOutputRange(-180, 180);
-    //mLeftController.setSmartMotionAllowedClosedLoopError(1, 0);
-    turnPIDController.enableContinuousInput(-180, 180);
-    turnPIDController.setTolerance(1, 1);
-
-
-    mRightController.setP(Constants.kTurnP);
-    mRightController.setD(Constants.kTurnD);
-    //mRightController.setFF(0.0);//Constants.kF);
-
-    //mRightController.setOutputRange(-180, 180);
-    //mRightController.setSmartMotionAllowedClosedLoopError(1, 0);
-  
-
-
 
     gyro.zeroYaw();
   
@@ -170,18 +143,6 @@ public class driveTrainSubSystem extends SubsystemBase
     System.out.println("Goal Angle " + angle);
     System.out.println("Gyro Angle YAW (TurntoAngle) " + gyro.getYaw());
 
-    m_goal = new TrapezoidProfile.State(angle, 0);
-  
-    //var profile = new TrapezoidProfile(m_constraints, m_goal, m_setpoint);
-    //m_setpoint = profile.calculate(gyro.getYaw());
-    //double turnSpeed = m_setpoint.velocity;
-    double turnSpeed = turnPIDController.calculate(gyro.getYaw(), angle);
-        
-    System.out.println("Turn Speed " + turnSpeed);
- 
-
-    mLeftController.setReference(turnSpeed, CANSparkMax.ControlType.kDutyCycle, 0);
-    mRightController.setReference(turnSpeed, CANSparkMax.ControlType.kDutyCycle, 0);
     /*
     m_goal = new TrapezoidProfile.State(angle, 0);
     var profile = new TrapezoidProfile(m_constraints, m_goal, m_setpoint);
@@ -196,6 +157,11 @@ public class driveTrainSubSystem extends SubsystemBase
   public double getAngle()
   {
     return Constants.turnAngle;
+  }
+
+  public void driveDistance(double distance)
+  {
+
   }
 
   @Override

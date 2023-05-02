@@ -57,7 +57,7 @@ public final class Constants
       public static final double kArmV = 0.050359;
 
       public static final double  kArmGearRatio = 228.5;
-      public static final double  kLowGearRatio = 10.75;
+      public static final double  kLowGearRatio = 18.75;
     
   //Intake.java
       //CANIDS
