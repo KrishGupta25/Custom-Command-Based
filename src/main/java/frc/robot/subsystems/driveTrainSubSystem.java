@@ -52,9 +52,8 @@ public class driveTrainSubSystem extends SubsystemBase
     private TrapezoidProfile.State m_turnSetpoint = new TrapezoidProfile.State(); //Making Setpoint
 
     //Making Arm PID Controller 
-    ProfiledPIDController mLeftTurnController = new ProfiledPIDController(Constants.kTurnP, 0, Constants.kTurnD, m_turnConstraints);
-    ProfiledPIDController mRightTurnController = new ProfiledPIDController(Constants.kTurnP, 0, Constants.kTurnD, m_turnConstraints);
- 
+    ProfiledPIDController mTurnController = new ProfiledPIDController(Constants.kTurnP, 0, Constants.kTurnD, m_turnConstraints);
+  
     
     public AHRS gyro = new AHRS(SPI.Port.kMXP);
     
@@ -101,10 +100,10 @@ public class driveTrainSubSystem extends SubsystemBase
     gyro.zeroYaw();
 
 
-    mLeftTurnController.setP(Constants.kTurnP);
-    mLeftTurnController.setD(Constants.kTurnD);
-    mRightTurnController.setP(Constants.kTurnP);
-    mLeftTurnController.setD(Constants.kTurnD);
+    mTurnController.setP(Constants.kTurnP);
+    mTurnController.setD(Constants.kTurnD);
+
+ 
   
   }
 
@@ -160,12 +159,16 @@ public class driveTrainSubSystem extends SubsystemBase
 
     m_turnGoal = new TrapezoidProfile.State(angle, 0);
     TrapezoidProfile profile = new TrapezoidProfile(m_turnConstraints, m_turnGoal, m_turnSetpoint);
-    var m_turnSetpoint = profile.calculate(Constants.kDt);
-    double angleSpeed = mLeftTurnController.calculate(gyro.getYaw(), m_turnSetpoint.velocity);
-    System.out.println("Angle Speed " + angleSpeed);
 
-    mLeftController.setReference(angleSpeed, CANSparkMax.ControlType.kVelocity, 0);
-    mRightController.setReference(angleSpeed, CANSparkMax.ControlType.kVelocity, 0);
+    var m_turnSetpoint = profile.calculate(Constants.kDt);
+
+    System.out.println("TURN SETPOINT: " + m_turnSetpoint.velocity);
+    //double angleSpeed = mTurnController.calculate(gyro.getYaw(), m_turnGoal);
+    //System.out.println("Angle Speed " + angleSpeed);
+
+  
+    mLeftController.setReference(m_turnSetpoint.velocity, CANSparkMax.ControlType.kVelocity, 0);
+    mRightController.setReference(m_turnSetpoint.velocity, CANSparkMax.ControlType.kVelocity, 0);
 
   }
 

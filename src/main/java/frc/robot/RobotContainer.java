@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.IntakeWithTriggers;
+import frc.robot.commands.TurnToAngle90;
 //import frc.robot.commands.TurnToAngle0;
 import frc.robot.commands.ArmSetPoints.ArmStowed;
 import frc.robot.commands.ArmSetPoints.ArmToGround;
@@ -41,7 +42,7 @@ public class RobotContainer {
   public static ArmToHuman armHuman = new ArmToHuman(arm);
   public static ArmToGround armGround = new ArmToGround(arm);
 
-  //public static TurnToAngle90 turn90 = new TurnToAngle90(drivetrain);
+  public static TurnToAngle90 turn90 = new TurnToAngle90(drivetrain);
   //public static TurnToAngle0 turn0 = new TurnToAngle0(drivetrain);
 
   public static Intake intake = new Intake();
@@ -65,7 +66,7 @@ public class RobotContainer {
     controller.x().onTrue(armGround);
     controller.y().onTrue(armHigh);
 
-    //controller.povLeft().onTrue(turn90);
+    controller.povLeft().onTrue(turn90);
     //controller.povRight().onTrue(turn0);
     //controller.leftBumper().onTrue(System.out.println(drivetra))
   }
