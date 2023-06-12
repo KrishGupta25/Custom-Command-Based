@@ -13,6 +13,7 @@ import frc.robot.commands.ArmSetPoints.ArmToGround;
 import frc.robot.commands.ArmSetPoints.ArmToHigh;
 import frc.robot.commands.ArmSetPoints.ArmToHuman;
 import frc.robot.commands.ArmWithController;
+import frc.robot.commands.DriveDistance;
 //import frc.robot.commands.TurnToAngle90;
 import frc.robot.subsystems.ArmSubSystem;
 import frc.robot.subsystems.driveTrainSubSystem;
@@ -43,6 +44,7 @@ public class RobotContainer {
   public static ArmToGround armGround = new ArmToGround(arm);
 
   public static TurnToAngle90 turn90 = new TurnToAngle90(drivetrain);
+  public static DriveDistance driveDistance = new DriveDistance(drivetrain);
   //public static TurnToAngle0 turn0 = new TurnToAngle0(drivetrain);
 
   public static Intake intake = new Intake();
@@ -66,7 +68,7 @@ public class RobotContainer {
     controller.x().onTrue(armGround);
     controller.y().onTrue(armHigh);
 
-    controller.povLeft().onTrue(turn90);
+    controller.povLeft().onTrue(driveDistance);
     //controller.povRight().onTrue(turn0);
     //controller.leftBumper().onTrue(System.out.println(drivetra))
   }
