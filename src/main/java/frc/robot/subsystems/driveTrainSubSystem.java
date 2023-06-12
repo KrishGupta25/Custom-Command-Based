@@ -4,11 +4,13 @@
 
 package frc.robot.subsystems;
 
+
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -45,8 +47,9 @@ public class driveTrainSubSystem extends SubsystemBase
     DifferentialDrive mDrivetrain = new DifferentialDrive(mLeftMotorControllerGroup, mRightMotorControllerGroup);
 
     SparkMaxPIDController mLeftController = mLeftMaster.getPIDController();
-    SparkMaxPIDController mRightController = mLeftMaster.getPIDController();
-    
+    SparkMaxPIDController mRightController = mRightMaster.getPIDController();
+
+      
     private TrapezoidProfile.Constraints m_turnConstraints = new TrapezoidProfile.Constraints(60, 60);
     private TrapezoidProfile.State m_turnGoal = new TrapezoidProfile.State(); //Making Goal
     private TrapezoidProfile.State m_turnSetpoint = new TrapezoidProfile.State(); //Making Setpoint
@@ -73,6 +76,7 @@ public class driveTrainSubSystem extends SubsystemBase
     mRightMaster.restoreFactoryDefaults();
     mRightSlave.restoreFactoryDefaults();
 
+    
     //Setting IdleMode
     mLeftMaster.setIdleMode(IdleMode.kBrake);
     mLeftSlave.setIdleMode(IdleMode.kBrake);
@@ -157,18 +161,16 @@ public class driveTrainSubSystem extends SubsystemBase
     System.out.println("Gyro Angle YAW (TurntoAngle) " + gyro.getYaw());
 
 
-    m_turnGoal = new TrapezoidProfile.State(angle, 0);
-    TrapezoidProfile profile = new TrapezoidProfile(m_turnConstraints, m_turnGoal, m_turnSetpoint);
+    //System.out.println("TURN SETPOINT: " + m_turnSetpoint.velocity);
 
-    var m_turnSetpoint = profile.calculate(Constants.kDt);
-
-    System.out.println("TURN SETPOINT: " + m_turnSetpoint.velocity);
+    System.out.println("Encoder Val: " + mRightEncoder.getPosition());
     //double angleSpeed = mTurnController.calculate(gyro.getYaw(), m_turnGoal);
     //System.out.println("Angle Speed " + angleSpeed);
 
-  
-    mLeftController.setReference(m_turnSetpoint.velocity, CANSparkMax.ControlType.kVelocity, 0);
-    mRightController.setReference(m_turnSetpoint.velocity, CANSparkMax.ControlType.kVelocity, 0);
+    
+   
+    mLeftController.setReference(1, CANSparkMax.ControlType.kVelocity);
+    mRightController.setReference(1, CANSparkMax.ControlType.kVelocity);
 
   }
 
@@ -179,7 +181,11 @@ public class driveTrainSubSystem extends SubsystemBase
 
   public void driveDistance(double distance)
   {
-
+    
+    mLeftController.setP(1);
+    mRightController.setP(1);
+    mLeftController.setReference(-distance, ControlType.kVelocity);
+    mRightController.setReference(distance, ControlType.kVelocity);
   }
 
   @Override
