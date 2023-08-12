@@ -65,10 +65,11 @@ public class driveTrainSubSystem extends SubsystemBase
   public driveTrainSubSystem() 
   {
     //Current Limits Motors
-    mLeftMaster.setSmartCurrentLimit(80);
-    mLeftSlave.setSmartCurrentLimit(80);
-    mRightMaster.setSmartCurrentLimit(80);
-    mRightSlave.setSmartCurrentLimit(80);
+    mLeftMaster.setSmartCurrentLimit(15);
+
+    mLeftSlave.setSmartCurrentLimit(15);
+    mRightMaster.setSmartCurrentLimit(15);
+    mRightSlave.setSmartCurrentLimit(15);
 
     //Restarting Everything to Factory Defualt
     mLeftMaster.restoreFactoryDefaults();
@@ -148,7 +149,7 @@ public class driveTrainSubSystem extends SubsystemBase
      double rightOutput = throttle - wheel, leftOutput = throttle + wheel;
      double scalingFactor = Math.max(1.0, Math.abs(throttle));
 
-     drive(leftOutput/scalingFactor, rightOutput/scalingFactor);
+     drive(leftOutput/scalingFactor*0.5, rightOutput/scalingFactor*0.5);
 
     
   }
