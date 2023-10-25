@@ -117,12 +117,20 @@ public class driveTrainSubSystem extends SubsystemBase
     mDrivetrain.arcadeDrive(left, right);
   }
 
-
   public void drive(double left, double right)
   {
     mDrivetrain.tankDrive(left, right);
   }
 
+  public void RightSlavesetSpeed(double speed)
+  {
+    mRightSlave.set(speed);
+  }
+
+  public void RightMastersetSpeed(double speed)
+  {
+    mRightMaster.set(speed);
+  }
 
   public void cheesyDrive(double throttle, double wheel, Boolean isQuickTurn)
   {

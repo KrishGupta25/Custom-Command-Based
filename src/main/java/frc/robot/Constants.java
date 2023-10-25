@@ -25,7 +25,7 @@ public final class Constants
       public static final double kTurnD = 0;//0.0033563;//
       public static final double kAutoP = 3.6/13;
     //Arm
-      public static final double kArmP = 0.05; //0.052272
+      public static final double kArmP = 0.03; //0.052272
       public static final double kArmI = 0;
       public static final double kArmD = 0.02;
       public static final double kArmFF = 0;

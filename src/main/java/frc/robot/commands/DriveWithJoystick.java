@@ -26,7 +26,11 @@ public class DriveWithJoystick extends CommandBase {
   public void execute() 
   {
     
-    drivetrain.cheesyDrive(-RobotContainer.controller.getLeftY(), RobotContainer.controller.getRightX(), RobotContainer.controller.rightBumper().getAsBoolean());
+    //drivetrain.cheesyDrive(-RobotContainer.controller.getLeftY(), RobotContainer.controller.getRightX(), RobotContainer.controller.rightBumper().getAsBoolean());
+    //drivetrain.drive(RobotContainer.controller.getLeftY(), RobotContainer.controller.getRightX());
+    drivetrain.RightMastersetSpeed(RobotContainer.controller.getLeftY());
+    //drivetrain.RightSlavesetSpeed(RobotContainer.controller.getRightX());
+    
     //System.out.println("Gyro Angle YAW (Cheesy) " + drivetrain.gyro.getYaw());
     
   }
@@ -38,6 +42,6 @@ public class DriveWithJoystick extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (Math.abs(RobotContainer.controller.getLeftY()) <= 0.1 && Math.abs(RobotContainer.controller.getRightX()) <= 0.1);
+    return false; //(Math.abs(RobotContainer.controller.getLeftY()) <= 0.1 && Math.abs(RobotContainer.controller.getRightX()) <= 0.1);
   }
 }

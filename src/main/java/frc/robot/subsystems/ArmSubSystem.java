@@ -38,11 +38,10 @@ public class ArmSubSystem extends SubsystemBase
          
 public ArmSubSystem()
 {
-    
     //Restarting Motors to Factory Default
     mLeftArm.restoreFactoryDefaults();
     mRightArm.restoreFactoryDefaults();
-
+    
     //Resetting Encoders
     mArmEncoder.setPosition(0);
 
@@ -50,8 +49,8 @@ public ArmSubSystem()
     mRightArm.follow(mLeftArm, true);
 
     //Current Limits Motors
-    mLeftArm.setSmartCurrentLimit(20);
-    mRightArm.setSmartCurrentLimit(20);
+    mLeftArm.setSmartCurrentLimit(40);
+    mRightArm.setSmartCurrentLimit(40);
 
     //Setting PID Values
     mArmController.setP(Constants.kArmP);
@@ -81,7 +80,7 @@ public void setPosition(String preset)
                 position = -38;
                 break;
             case "high": //high goal
-                position = -120;
+                position = -92;
                 break;
 
             case "human": //human player
@@ -149,6 +148,8 @@ public void setSpeed(double speed)
             mLeftArm.set(speed);
             System.out.print(mLeftArm.getEncoder().getPosition());
         }
+        System.out.print(mRightArm.getEncoder().getPosition());
+
 }
 }
 
